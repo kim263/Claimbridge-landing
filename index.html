@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClaimBridge — Coming Soon</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #07101E;
+    --navy-2: #0C1A2E;
+    --navy-3: #112240;
+    --teal: #00C9A7;
+    --teal-glow: rgba(0,201,167,0.12);
+    --teal-border: rgba(0,201,167,0.25);
+    --white: #EFF6FF;
+    --muted: #5B7A99;
+    --border: rgba(255,255,255,0.07);
+    --card: rgba(255,255,255,0.03);
+    --red: #FF4D6D;
+    --amber: #FFB830;
+  }
+
+- { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+body {
+font-family: ‘DM Sans’, sans-serif;
+background: var(–navy);
+color: var(–white);
+overflow-x: hidden;
+}
+
+/* ── BACKGROUND TEXTURE ── */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background:
+radial-gradient(ellipse 80% 50% at 80% -10%, rgba(0,201,167,0.10) 0%, transparent 60%),
+radial-gradient(ellipse 60% 40% at -10% 80%, rgba(0,80,200,0.08) 0%, transparent 60%);
+pointer-events: none;
+z-index: 0;
+}
+
+/* Grid overlay */
+body::after {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image:
+linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+background-size: 60px 60px;
+pointer-events: none;
+z-index: 0;
+mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+}
+
+/* ── NAV ── */
+nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+padding: 20px 60px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+backdrop-filter: blur(24px);
+background: rgba(7,16,30,0.8);
+border-bottom: 1px solid var(–border);
+}
+
+.logo {
+font-family: ‘Syne’, sans-serif;
+font-weight: 800;
+font-size: 1.35rem;
+color: var(–white);
+letter-spacing: -0.02em;
+text-decoration: none;
+}
+.logo span { color: var(–teal); }
+
+.nav-badge {
+display: flex;
+align-items: center;
+gap: 8px;
+background: var(–teal-glow);
+border: 1px solid var(–teal-border);
+border-radius: 100px;
+padding: 6px 16px;
+font-size: 0.78rem;
+font-weight: 500;
+color: var(–teal);
+}
+
+.pulse {
+width: 6px; height: 6px;
+background: var(–teal);
+border-radius: 50%;
+animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+0%, 100% { opacity: 1; transform: scale(1); }
+50% { opacity: 0.4; transform: scale(0.75); }
+}
+
+/* ── HERO ── */
+.hero {
+position: relative;
+z-index: 1;
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 140px 24px 80px;
+text-align: center;
+}
+
+.hero-inner {
+max-width: 800px;
+width: 100%;
+}
+
+.hero-eyebrow {
+display: inline-flex;
+align-items: center;
+gap: 10px;
+font-size: 0.75rem;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.14em;
+color: var(–teal);
+margin-bottom: 32px;
+opacity: 0;
+animation: fadeUp 0.7s 0.1s ease forwards;
+}
+
+.eyebrow-line {
+width: 32px;
+height: 1px;
+background: var(–teal);
+opacity: 0.5;
+}
+
+.hero h1 {
+font-family: ‘Syne’, sans-serif;
+font-size: clamp(2.8rem, 6vw, 5rem);
+font-weight: 800;
+line-height: 1.03;
+letter-spacing: -0.04em;
+margin-bottom: 28px;
+opacity: 0;
+animation: fadeUp 0.7s 0.2s ease forwards;
+}
+
+.hero h1 em {
+font-style: normal;
+color: var(–teal);
+}
+
+.hero h1 .line-2 {
+display: block;
+color: rgba(255,255,255,0.35);
+font-size: 85%;
+}
+
+.hero-sub {
+font-size: 1.1rem;
+line-height: 1.75;
+color: rgba(255,255,255,0.55);
+font-weight: 300;
+max-width: 600px;
+margin: 0 auto 48px;
+opacity: 0;
+animation: fadeUp 0.7s 0.3s ease forwards;
+}
+
+/* Waitlist counter */
+.waitlist-count {
+display: inline-flex;
+align-items: center;
+gap: 12px;
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 100px;
+padding: 10px 20px;
+margin-bottom: 48px;
+font-size: 0.85rem;
+color: var(–muted);
+opacity: 0;
+animation: fadeUp 0.7s 0.35s ease forwards;
+}
+
+.waitlist-count strong { color: var(–teal); font-family: ‘Syne’, sans-serif; font-size: 1rem; }
+
+.avatars {
+display: flex;
+}
+
+.avatar {
+width: 26px; height: 26px;
+border-radius: 50%;
+border: 2px solid var(–navy);
+margin-left: -8px;
+background: var(–navy-3);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.6rem;
+color: var(–teal);
+font-weight: 700;
+}
+
+.avatar:first-child { margin-left: 0; }
+
+/* ── PROBLEM STRIPS ── */
+.problem-strips {
+display: flex;
+gap: 10px;
+justify-content: center;
+flex-wrap: wrap;
+margin-bottom: 56px;
+opacity: 0;
+animation: fadeUp 0.7s 0.4s ease forwards;
+}
+
+.strip {
+display: flex;
+align-items: center;
+gap: 8px;
+background: rgba(255,77,109,0.07);
+border: 1px solid rgba(255,77,109,0.15);
+border-radius: 8px;
+padding: 8px 14px;
+font-size: 0.8rem;
+color: rgba(255,255,255,0.6);
+}
+
+.strip-icon { font-size: 0.9rem; }
+
+/* ── HOW IT WORKS ── */
+.how-section {
+position: relative;
+z-index: 1;
+padding: 100px 24px;
+max-width: 1100px;
+margin: 0 auto;
+}
+
+.section-label {
+text-align: center;
+font-size: 0.72rem;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 0.14em;
+color: var(–teal);
+margin-bottom: 16px;
+}
+
+.section-title {
+text-align: center;
+font-family: ‘Syne’, sans-serif;
+font-size: clamp(1.8rem, 3vw, 2.6rem);
+font-weight: 800;
+letter-spacing: -0.03em;
+line-height: 1.1;
+margin-bottom: 16px;
+}
+
+.section-sub {
+text-align: center;
+font-size: 1rem;
+color: rgba(255,255,255,0.45);
+font-weight: 300;
+line-height: 1.7;
+max-width: 520px;
+margin: 0 auto 64px;
+}
+
+.steps {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 2px;
+position: relative;
+}
+
+/* Connector line between steps */
+.steps::before {
+content: ‘’;
+position: absolute;
+top: 48px;
+left: calc(16.66% + 24px);
+right: calc(16.66% + 24px);
+height: 1px;
+background: linear-gradient(90deg, var(–teal-border), var(–teal-border));
+z-index: 0;
+}
+
+.step {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 20px;
+padding: 36px 32px 32px;
+position: relative;
+transition: border-color 0.3s, transform 0.3s;
+z-index: 1;
+}
+
+.step:hover {
+border-color: var(–teal-border);
+transform: translateY(-6px);
+}
+
+.step-num-wrap {
+display: flex;
+align-items: center;
+gap: 16px;
+margin-bottom: 24px;
+}
+
+.step-num {
+width: 44px; height: 44px;
+border-radius: 12px;
+background: var(–teal-glow);
+border: 1px solid var(–teal-border);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: ‘Syne’, sans-serif;
+font-weight: 800;
+font-size: 1rem;
+color: var(–teal);
+flex-shrink: 0;
+}
+
+.step-icon-lg { font-size: 1.4rem; }
+
+.step h3 {
+font-family: ‘Syne’, sans-serif;
+font-size: 1.05rem;
+font-weight: 700;
+margin-bottom: 10px;
+line-height: 1.3;
+}
+
+.step p {
+font-size: 0.86rem;
+color: var(–muted);
+line-height: 1.65;
+}
+
+.step-tag {
+display: inline-block;
+margin-top: 16px;
+font-size: 0.7rem;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.08em;
+color: var(–teal);
+background: var(–teal-glow);
+border: 1px solid var(–teal-border);
+border-radius: 100px;
+padding: 3px 10px;
+}
+
+/* Pain → Gain arrow */
+.pain-gain {
+display: grid;
+grid-template-columns: 1fr auto 1fr;
+gap: 24px;
+align-items: center;
+max-width: 900px;
+margin: 64px auto 0;
+padding: 32px 36px;
+background: var(–navy-2);
+border: 1px solid var(–border);
+border-radius: 20px;
+}
+
+.pain-side, .gain-side { }
+
+.pain-side .side-label {
+font-size: 0.68rem;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 0.1em;
+color: var(–red);
+margin-bottom: 12px;
+opacity: 0.7;
+}
+
+.gain-side .side-label {
+font-size: 0.68rem;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 0.1em;
+color: var(–teal);
+margin-bottom: 12px;
+}
+
+.pain-item, .gain-item {
+display: flex;
+align-items: flex-start;
+gap: 10px;
+margin-bottom: 10px;
+font-size: 0.85rem;
+color: rgba(255,255,255,0.65);
+line-height: 1.4;
+}
+
+.pain-item .dot { color: var(–red); opacity: 0.7; flex-shrink: 0; }
+.gain-item .dot { color: var(–teal); flex-shrink: 0; }
+
+.arrow-mid {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 8px;
+}
+
+.arrow-circle {
+width: 52px; height: 52px;
+border-radius: 50%;
+background: var(–teal-glow);
+border: 1px solid var(–teal-border);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.2rem;
+}
+
+.arrow-label {
+font-family: ‘Syne’, sans-serif;
+font-size: 0.62rem;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 0.08em;
+color: var(–teal);
+text-align: center;
+}
+
+/* ── WAITLIST FORM ── */
+.waitlist-section {
+position: relative;
+z-index: 1;
+padding: 100px 24px 120px;
+}
+
+.waitlist-card {
+max-width: 680px;
+margin: 0 auto;
+background: var(–navy-2);
+border: 1px solid var(–border);
+border-radius: 28px;
+padding: 56px 52px;
+position: relative;
+overflow: hidden;
+}
+
+.waitlist-card::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 3px;
+background: linear-gradient(90deg, var(–teal), #00AAFF);
+}
+
+.waitlist-card::after {
+content: ‘’;
+position: absolute;
+top: -80px; right: -80px;
+width: 300px; height: 300px;
+background: radial-gradient(circle, rgba(0,201,167,0.07) 0%, transparent 70%);
+pointer-events: none;
+}
+
+.waitlist-card .section-label { text-align: left; margin-bottom: 10px; }
+.waitlist-card .section-title { text-align: left; font-size: 2rem; margin-bottom: 10px; }
+
+.waitlist-desc {
+font-size: 0.9rem;
+color: var(–muted);
+line-height: 1.65;
+margin-bottom: 36px;
+}
+
+.waitlist-desc strong { color: var(–teal); }
+
+.form-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 14px;
+margin-bottom: 14px;
+}
+
+.form-field {
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+
+.form-field.full { grid-column: 1 / -1; }
+
+.form-label {
+font-size: 0.72rem;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.08em;
+color: var(–muted);
+}
+
+.form-input, .form-select {
+background: rgba(255,255,255,0.04);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 13px 15px;
+color: var(–white);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 0.9rem;
+outline: none;
+transition: border-color 0.2s, background 0.2s;
+width: 100%;
+appearance: none;
+-webkit-appearance: none;
+}
+
+.form-input:focus, .form-select:focus {
+border-color: var(–teal-border);
+background: rgba(0,201,167,0.05);
+}
+
+.form-input::placeholder { color: rgba(91,122,153,0.7); }
+
+.select-wrap {
+position: relative;
+}
+
+.select-wrap::after {
+content: ‘▾’;
+position: absolute;
+right: 14px;
+top: 50%;
+transform: translateY(-50%);
+color: var(–muted);
+font-size: 0.85rem;
+pointer-events: none;
+}
+
+.form-select option {
+background: var(–navy-2);
+color: var(–white);
+}
+
+.submit-btn {
+width: 100%;
+padding: 16px;
+background: var(–teal);
+color: var(–navy);
+border: none;
+border-radius: 12px;
+font-family: ‘Syne’, sans-serif;
+font-weight: 800;
+font-size: 1rem;
+cursor: pointer;
+transition: all 0.25s;
+margin-top: 6px;
+letter-spacing: 0.01em;
+position: relative;
+overflow: hidden;
+}
+
+.submit-btn:hover {
+background: #00DDB8;
+transform: translateY(-2px);
+box-shadow: 0 10px 30px rgba(0,201,167,0.25);
+}
+
+.submit-btn:active { transform: translateY(0); }
+
+.form-privacy {
+text-align: center;
+font-size: 0.75rem;
+color: var(–muted);
+margin-top: 14px;
+line-height: 1.5;
+}
+
+/* Success state */
+.success-state {
+display: none;
+text-align: center;
+padding: 20px 0;
+}
+
+.success-icon {
+font-size: 3rem;
+margin-bottom: 20px;
+display: block;
+}
+
+.success-state h3 {
+font-family: ‘Syne’, sans-serif;
+font-size: 1.6rem;
+font-weight: 800;
+margin-bottom: 12px;
+color: var(–teal);
+}
+
+.success-state p {
+font-size: 0.9rem;
+color: var(–muted);
+line-height: 1.65;
+}
+
+/* Perks below form */
+.waitlist-perks {
+display: flex;
+justify-content: center;
+gap: 32px;
+margin-top: 36px;
+flex-wrap: wrap;
+}
+
+.perk {
+display: flex;
+align-items: center;
+gap: 8px;
+font-size: 0.8rem;
+color: var(–muted);
+}
+
+.perk-icon { color: var(–teal); font-size: 0.9rem; }
+
+/* ── FOOTER ── */
+footer {
+position: relative;
+z-index: 1;
+border-top: 1px solid var(–border);
+padding: 32px 60px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
+gap: 12px;
+}
+
+footer p { font-size: 0.78rem; color: var(–muted); }
+
+footer a {
+font-size: 0.78rem;
+color: var(–muted);
+text-decoration: none;
+transition: color 0.2s;
+}
+
+footer a:hover { color: var(–white); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(22px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+opacity: 0;
+transform: translateY(22px);
+transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+nav { padding: 16px 20px; }
+.hero { padding: 120px 20px 60px; }
+.how-section { padding: 60px 20px; }
+.steps { grid-template-columns: 1fr; }
+.steps::before { display: none; }
+.pain-gain { grid-template-columns: 1fr; gap: 20px; }
+.arrow-mid { transform: rotate(90deg); }
+.waitlist-section { padding: 60px 16px 80px; }
+.waitlist-card { padding: 36px 24px; }
+.form-grid { grid-template-columns: 1fr; }
+footer { padding: 24px 20px; flex-direction: column; text-align: center; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- NAV -->
+
+<nav>
+  <a href="#" class="logo">Claim<span>Bridge</span></a>
+  <div class="nav-badge">
+    <span class="pulse"></span>
+    Currently in development
+  </div>
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+  <div class="hero-inner">
+
+```
+<div class="hero-eyebrow">
+  <span class="eyebrow-line"></span>
+  Built for Australian WorkCover & TAC Providers
+  <span class="eyebrow-line"></span>
+</div>
+
+<h1>
+  Stop losing hours to<br><em>claim paperwork.</em>
+  <span class="line-2">Start seeing more patients.</span>
+</h1>
+
+<p class="hero-sub">
+  ClaimBridge is a purpose-built platform that turns your clinical notes into compliant WorkCover and TAC treatment plan documents in minutes — not hours. Built by a clinician, for clinicians.
+</p>
+
+<div class="waitlist-count">
+  <div class="avatars">
+    <div class="avatar">GP</div>
+    <div class="avatar">PT</div>
+    <div class="avatar">OS</div>
+    <div class="avatar">+</div>
+  </div>
+  <span>Join practitioners already on the waitlist — <strong>be first in.</strong></span>
+</div>
+
+<div class="problem-strips">
+  <div class="strip"><span class="strip-icon">⏱</span> 45–90 mins unbillable admin per claim</div>
+  <div class="strip"><span class="strip-icon">🚫</span> GPs turning away WorkCover patients</div>
+  <div class="strip"><span class="strip-icon">📋</span> Templates that get rejected by insurers</div>
+  <div class="strip"><span class="strip-icon">📁</span> Records scattered across email & folders</div>
+</div>
+
+<a href="#waitlist" style="
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--teal); color:var(--navy);
+  padding:16px 40px; border-radius:12px;
+  font-family:'Syne',sans-serif; font-weight:800; font-size:1rem;
+  text-decoration:none; transition:all 0.2s;
+  box-shadow:0 0 40px rgba(0,201,167,0.2);
+" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 40px rgba(0,201,167,0.3)'"
+   onmouseout="this.style.transform='';this.style.boxShadow='0 0 40px rgba(0,201,167,0.2)'">
+  Join the waitlist — it's free →
+</a>
+```
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+
+<section class="how-section">
+  <div class="reveal">
+    <div class="section-label">How it works</div>
+    <h2 class="section-title">From clinical notes to compliant<br>document in under 10 minutes</h2>
+    <p class="section-sub">No training required. Works alongside your existing practice management software.</p>
+  </div>
+
+  <div class="steps reveal">
+    <div class="step">
+      <div class="step-num-wrap">
+        <div class="step-num">01</div>
+        <div class="step-icon-lg">📝</div>
+      </div>
+      <h3>Fill in the smart form</h3>
+      <p>Enter your patient's diagnosis, treatment barriers, goals and clinical findings. Upload radiology reports directly. ClaimBridge knows what WorkSafe and TAC require — no guesswork, no blank pages.</p>
+      <span class="step-tag">2 minutes</span>
+    </div>
+    <div class="step">
+      <div class="step-num-wrap">
+        <div class="step-num">02</div>
+        <div class="step-icon-lg">⚡</div>
+      </div>
+      <h3>Generate your document</h3>
+      <p>ClaimBridge instantly produces a fully compliant treatment plan, pre-formatted to current WorkSafe Victoria and TAC standards. Every field populated, every requirement met.</p>
+      <span class="step-tag">Seconds</span>
+    </div>
+    <div class="step">
+      <div class="step-num-wrap">
+        <div class="step-num">03</div>
+        <div class="step-icon-lg">📨</div>
+      </div>
+      <h3>Review and submit</h3>
+      <p>Check, sign off and submit directly to the insurer. All patient records stored securely in your account — accessible, auditable, and organised by claim.</p>
+      <span class="step-tag">Done</span>
+    </div>
+  </div>
+
+  <!-- Pain vs Gain -->
+
+  <div class="pain-gain reveal">
+    <div class="pain-side">
+      <div class="side-label">Without ClaimBridge</div>
+      <div class="pain-item"><span class="dot">✗</span> 45–90 min of unbillable admin per patient</div>
+      <div class="pain-item"><span class="dot">✗</span> Generic templates that get rejected</div>
+      <div class="pain-item"><span class="dot">✗</span> Records scattered across email and folders</div>
+      <div class="pain-item"><span class="dot">✗</span> Turning away WorkCover & TAC patients</div>
+    </div>
+    <div class="arrow-mid">
+      <div class="arrow-circle">→</div>
+      <div class="arrow-label">With<br>Claim<br>Bridge</div>
+    </div>
+    <div class="gain-side">
+      <div class="side-label">With ClaimBridge</div>
+      <div class="gain-item"><span class="dot">✓</span> Treatment plans done in under 10 minutes</div>
+      <div class="gain-item"><span class="dot">✓</span> Compliant documents, first time every time</div>
+      <div class="gain-item"><span class="dot">✓</span> All claims in one secure, organised place</div>
+      <div class="gain-item"><span class="dot">✓</span> WorkCover & TAC patients become profitable</div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST FORM -->
+
+<section class="waitlist-section" id="waitlist">
+  <div class="waitlist-card reveal">
+
+```
+<div class="section-label">Early Access</div>
+<h2 class="section-title">Join the waitlist</h2>
+<p class="waitlist-desc">
+  ClaimBridge is currently in development. Founding members get <strong>3 months free</strong> when we launch, plus direct input into the features we build first.
+</p>
+
+<!-- FORM -->
+<div id="form-wrap">
+  <div class="form-grid">
+    <div class="form-field">
+      <label class="form-label">Full Name</label>
+      <input type="text" class="form-input" id="f-name" placeholder="Jane Smith">
+    </div>
+    <div class="form-field">
+      <label class="form-label">Email Address</label>
+      <input type="email" class="form-input" id="f-email" placeholder="jane@clinic.com.au">
+    </div>
+    <div class="form-field">
+      <label class="form-label">Profession</label>
+      <div class="select-wrap">
+        <select class="form-select" id="f-profession">
+          <option value="" disabled selected>Select your profession</option>
+          <option>General Practitioner</option>
+          <option>Physiotherapist</option>
+          <option>Osteopath</option>
+          <option>Chiropractor</option>
+          <option>Pain Specialist</option>
+          <option>Orthopaedic Surgeon</option>
+          <option>Occupational Therapist</option>
+          <option>Exercise Physiologist</option>
+          <option>Practice Manager / Admin</option>
+          <option>Other Allied Health</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Active WorkCover / TAC Patients</label>
+      <div class="select-wrap">
+        <select class="form-select" id="f-volume">
+          <option value="" disabled selected>Approx. per month</option>
+          <option>1–5 patients</option>
+          <option>6–10 patients</option>
+          <option>11–25 patients</option>
+          <option>26–50 patients</option>
+          <option>50+ patients</option>
+          <option>None yet — looking to start</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <button class="submit-btn" onclick="submitForm()">
+    Reserve my founding member spot →
+  </button>
+  <p class="form-privacy">🔒 No spam. No credit card. Just early access when we launch.</p>
+</div>
+
+<!-- SUCCESS STATE -->
+<div class="success-state" id="success-state">
+  <span class="success-icon">🎉</span>
+  <h3>You're on the list.</h3>
+  <p>Thanks for joining the ClaimBridge waitlist. As a founding member you'll get 3 months free when we launch, plus you'll hear from us first as we build.<br><br>We'll be in touch soon.</p>
+</div>
+```
+
+  </div>
+
+  <!-- Perks -->
+
+  <div class="waitlist-perks reveal">
+    <div class="perk"><span class="perk-icon">✓</span> 3 months free for founding members</div>
+    <div class="perk"><span class="perk-icon">✓</span> Shape the features we build</div>
+    <div class="perk"><span class="perk-icon">✓</span> No credit card required</div>
+    <div class="perk"><span class="perk-icon">✓</span> Cancel anytime after launch</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+  <p>© 2025 ClaimBridge. Built for Australian healthcare providers.</p>
+  <div style="display:flex;gap:20px;">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => obs.observe(el));
+
+  // Form submit
+  function submitForm() {
+    const name = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const profession = document.getElementById('f-profession').value;
+    const volume = document.getElementById('f-volume').value;
+
+    if (!name) { alert('Please enter your name.'); return; }
+    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    if (!profession) { alert('Please select your profession.'); return; }
+    if (!volume) { alert('Please select your approximate patient volume.'); return; }
+
+    // Store locally (until you connect a backend/Mailchimp/etc)
+    const entries = JSON.parse(localStorage.getItem('cb-waitlist') || '[]');
+    entries.push({ name, email, profession, volume, date: new Date().toISOString() });
+    localStorage.setItem('cb-waitlist', JSON.stringify(entries));
+
+    // Show success
+    document.getElementById('form-wrap').style.display = 'none';
+    document.getElementById('success-state').style.display = 'block';
+
+    console.log('Waitlist entry:', { name, email, profession, volume });
+  }
+</script>
+
+</body>
+</html>
