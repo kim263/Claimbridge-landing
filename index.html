@@ -956,5 +956,23 @@
 </footer>
 
 
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => obs.observe(el));
+
+  // Also trigger hero animations immediately
+  document.querySelectorAll('.hero-eyebrow, .hero h1, .hero-sub, .waitlist-count, .problem-strips').forEach(el => {
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  });
+</script>
 </body>
 </html>
