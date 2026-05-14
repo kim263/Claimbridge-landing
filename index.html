@@ -659,17 +659,61 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
-    nav { padding: 16px 20px; }
-    .hero { padding: 120px 20px 60px; }
+    nav { padding: 14px 20px; }
+    nav .nav-badge { font-size: 0.7rem; padding: 5px 12px; }
+    .hero { padding: 110px 20px 60px; }
+    .hero h1 { font-size: 2.4rem; letter-spacing: -0.03em; }
+    .hero-sub { font-size: 0.95rem; }
+    .hero-eyebrow { font-size: 0.68rem; }
+    .problem-strips { gap: 8px; }
+    .strip { font-size: 0.75rem; padding: 7px 12px; }
     .how-section { padding: 60px 20px; }
-    .steps { grid-template-columns: 1fr; }
+    .section-title { font-size: 1.7rem; }
+    .steps { grid-template-columns: 1fr; gap: 12px; }
     .steps::before { display: none; }
-    .pain-gain { grid-template-columns: 1fr; gap: 20px; }
-    .arrow-mid { transform: rotate(90deg); }
+    .pain-gain { grid-template-columns: 1fr; gap: 20px; padding: 24px 20px; }
+    .arrow-mid { transform: rotate(90deg); margin: 8px auto; }
     .waitlist-section { padding: 60px 16px 80px; }
-    .waitlist-card { padding: 36px 24px; }
+    .waitlist-card { padding: 32px 20px; border-radius: 20px; }
     .form-grid { grid-template-columns: 1fr; }
-    footer { padding: 24px 20px; flex-direction: column; text-align: center; }
+    .waitlist-perks { gap: 16px; flex-direction: column; align-items: center; }
+    footer { padding: 24px 20px; flex-direction: column; text-align: center; gap: 16px; }
+  }
+
+  @media (max-width: 768px) {
+    /* Outcomes section - 3 col to 1 col */
+    section > div[style*="grid-template-columns: repeat(3"] {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    /* Revenue section - 2 col to 1 col */
+    div[style*="grid-template-columns: 1fr 1fr"] {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 28px !important;
+    }
+    /* Revenue section padding */
+    div[style*="padding: 52px 48px"] {
+      padding: 32px 20px !important;
+    }
+    /* Outcomes section heading */
+    div[style*="grid-template-columns: repeat(3"] > div {
+      width: 100% !important;
+    }
+    /* Problem strips on mobile */
+    .problem-strips {
+      justify-content: flex-start;
+    }
+    /* Hero CTA button */
+    a[style*="padding:16px 40px"] {
+      padding: 14px 28px !important;
+      font-size: 0.9rem !important;
+      width: 100% !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
+    }
+    /* Submit button */
+    .submit-btn { font-size: 0.9rem; padding: 14px; }
   }
 </style>
 </head>
