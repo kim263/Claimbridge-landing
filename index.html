@@ -725,12 +725,38 @@
     .problem-strips { justify-content: center; }
     /* Section titles */
     .section-title, .section-label, .section-sub { text-align: center !important; }
-    /* Ensure full width on mobile */
-    body { overflow-x: hidden; width: 100%; }
-    * { max-width: 100%; }
+    /* Fix left skew - ensure full width and centred */
+    html, body { 
+      overflow-x: hidden !important; 
+      width: 100% !important; 
+      margin: 0 !important;
+      padding: 0 !important;
+      position: relative !important;
+    }
+    section, .how-section, .waitlist-section, .revenue-section {
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      box-sizing: border-box !important;
+      width: 100% !important;
+    }
+    .problem-section {
+      margin: 0 !important;
+      border-radius: 0 !important;
+      width: 100% !important;
+    }
+    nav {
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
     /* Pain gain section */
     .pain-gain { text-align: center; }
     .pain-side, .gain-side { text-align: left; }
+    /* Show swipe hint on mobile */
+    .swipe-hint { display: block !important; }
     /* Outcomes grid - horizontal scroll on mobile */
     .outcomes-grid {
       display: flex !important;
@@ -746,6 +772,82 @@
       flex-shrink: 0 !important;
       scroll-snap-align: start !important;
     }
+  }
+
+  /* ── REVENUE SECTION ── */
+  .revenue-section {
+    position: relative;
+    z-index: 1;
+    padding: 0 24px 80px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .revenue-inner {
+    background: linear-gradient(135deg,#0C1A2E,#112240);
+    border: 1px solid rgba(0,201,167,0.2);
+    border-radius: 20px;
+    padding: 52px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .revenue-heading {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .revenue-body {
+    font-size: 0.92rem;
+    color: #5B7A99;
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .revenue-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .revenue-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px 22px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .revenue-card-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+  .revenue-card-title {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #EFF6FF;
+    margin-bottom: 4px;
+  }
+  .revenue-card-body {
+    font-size: 0.78rem;
+    color: #5B7A99;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .revenue-section { padding: 0 16px 60px; }
+    .revenue-inner {
+      display: flex !important;
+      flex-direction: column !important;
+      padding: 28px 20px !important;
+      gap: 28px !important;
+      border-radius: 16px !important;
+    }
+    .revenue-heading { font-size: 1.4rem; }
+    .revenue-cards { gap: 10px; }
   }
 </style>
 </head>
@@ -901,6 +1003,11 @@
       <p style="font-size:0.84rem;color:#5B7A99;line-height:1.6;">Less time on admin means more clinical energy for the patient in front of you. Engaged, focused practitioners deliver better care — it's that simple.</p>
     </div>
   </div>
+  <div class="swipe-hint" style="display:none;text-align:center;margin-top:14px;">
+    <span style="font-size:0.78rem;color:#5B7A99;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:5px 14px;display:inline-flex;align-items:center;gap:8px;">
+      <span style="font-size:1rem;">👈</span> swipe to explore <span style="font-size:1rem;">👉</span>
+    </span>
+  </div>
   <div class="reveal" style="margin-top:32px;background:#0C1A2E;border:1px solid rgba(0,201,167,0.2);border-radius:16px;padding:28px 36px;text-align:center;">
     <p style="font-size:1.05rem;color:#EFF6FF;line-height:1.7;font-style:italic;max-width:700px;margin:0 auto;">"You didn't become a clinician to fight with insurance paperwork. ClaimBridge gives you the time back to do what you trained for — helping patients recover."</p>
     <p style="font-size:0.78rem;color:#5B7A99;margin-top:12px;">— The ClaimBridge mission</p>
@@ -909,34 +1016,34 @@
 
 
 <!-- REVENUE SECTION -->
-<section style="position:relative;z-index:1;padding:0 24px 80px;max-width:1000px;margin:0 auto;">
-  <div class="reveal" style="background:linear-gradient(135deg,#0C1A2E,#112240);border:1px solid rgba(0,201,167,0.2);border-radius:20px;padding:52px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
-    <div>
+<section class="revenue-section">
+  <div class="revenue-inner reveal">
+    <div class="revenue-text">
       <div class="section-label" style="text-align:left;">Revenue opportunity</div>
-      <h2 style="font-family:'Arial Black',Arial,sans-serif;font-size:1.9rem;font-weight:800;letter-spacing:-0.02em;line-height:1.1;margin-bottom:16px;">WorkCover & TAC patients are a<br><span style="color:#00C9A7;">government-backed revenue stream.</span></h2>
-      <p style="font-size:0.92rem;color:#5B7A99;line-height:1.7;margin-bottom:24px;">Fee schedules are set by WorkSafe Victoria and the TAC — meaning your income per consultation is predictable, guaranteed, and paid promptly. The only reason practices turn these patients away is the admin burden. ClaimBridge removes that barrier entirely.</p>
-      <a href="#waitlist" style="display:inline-flex;align-items:center;gap:8px;background:#00C9A7;color:#07101E;padding:14px 28px;border-radius:10px;font-family:'Arial Black',Arial,sans-serif;font-weight:800;font-size:0.9rem;text-decoration:none;">Start accepting more claims →</a>
+      <h2 class="revenue-heading">WorkCover & TAC patients are a<br><span style="color:#00C9A7;">government-backed revenue stream.</span></h2>
+      <p class="revenue-body">Fee schedules are set by WorkSafe Victoria and the TAC — meaning your income per consultation is predictable, guaranteed, and paid promptly. The only reason practices turn these patients away is the admin burden. ClaimBridge removes that barrier entirely.</p>
+      <a href="#waitlist" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">Start accepting more claims →</a>
     </div>
-    <div style="display:flex;flex-direction:column;gap:14px;">
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 22px;display:flex;gap:16px;align-items:flex-start;">
-        <div style="font-size:1.6rem;flex-shrink:0;">🏛️</div>
+    <div class="revenue-cards">
+      <div class="revenue-card">
+        <div class="revenue-card-icon">🏛️</div>
         <div>
-          <div style="font-family:'Arial Black',Arial,sans-serif;font-size:0.9rem;font-weight:800;color:#EFF6FF;margin-bottom:4px;">Government-set fee schedules</div>
-          <div style="font-size:0.78rem;color:#5B7A99;line-height:1.5;">Fees are fixed by WorkSafe Victoria and the TAC — no negotiating, no chasing. You know exactly what you'll be paid before you see the patient.</div>
+          <div class="revenue-card-title">Government-set fee schedules</div>
+          <div class="revenue-card-body">Fees are fixed by WorkSafe Victoria and the TAC — no negotiating, no chasing. You know exactly what you'll be paid before you see the patient.</div>
         </div>
       </div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 22px;display:flex;gap:16px;align-items:flex-start;">
-        <div style="font-size:1.6rem;flex-shrink:0;">⚡</div>
+      <div class="revenue-card">
+        <div class="revenue-card-icon">⚡</div>
         <div>
-          <div style="font-family:'Arial Black',Arial,sans-serif;font-size:0.9rem;font-weight:800;color:#EFF6FF;margin-bottom:4px;">Prompt, reliable payment</div>
-          <div style="font-size:0.78rem;color:#5B7A99;line-height:1.5;">Unlike private patients, WorkCover and TAC claims are backed by insurers with clear payment timeframes. Less chasing invoices, more predictable cash flow.</div>
+          <div class="revenue-card-title">Prompt, reliable payment</div>
+          <div class="revenue-card-body">Unlike private patients, WorkCover and TAC claims are backed by insurers with clear payment timeframes. Less chasing invoices, more predictable cash flow.</div>
         </div>
       </div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 22px;display:flex;gap:16px;align-items:flex-start;">
-        <div style="font-size:1.6rem;flex-shrink:0;">📈</div>
+      <div class="revenue-card">
+        <div class="revenue-card-icon">📈</div>
         <div>
-          <div style="font-family:'Arial Black',Arial,sans-serif;font-size:0.9rem;font-weight:800;color:#EFF6FF;margin-bottom:4px;">Long-term patient relationships</div>
-          <div style="font-size:0.78rem;color:#5B7A99;line-height:1.5;">WorkCover and TAC patients typically require ongoing treatment over months. Each new claim is recurring revenue, not a one-off consultation.</div>
+          <div class="revenue-card-title">Long-term patient relationships</div>
+          <div class="revenue-card-body">WorkCover and TAC patients typically require ongoing treatment over months. Each new claim is recurring revenue, not a one-off consultation.</div>
         </div>
       </div>
     </div>
