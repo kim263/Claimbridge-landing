@@ -672,7 +672,7 @@
     .steps { grid-template-columns: 1fr; gap: 12px; }
     .steps::before { display: none; }
     .pain-gain { grid-template-columns: 1fr; gap: 20px; padding: 24px 20px; }
-    .arrow-mid { transform: rotate(90deg); margin: 8px auto; }
+    .arrow-mid { transform: none; margin: 8px auto; }
     .waitlist-section { padding: 60px 16px 80px; }
     .waitlist-card { padding: 32px 20px; border-radius: 20px; }
     .form-grid { grid-template-columns: 1fr; }
@@ -690,11 +690,16 @@
     div[style*="grid-template-columns: 1fr 1fr"] {
       display: flex !important;
       flex-direction: column !important;
-      gap: 28px !important;
+      gap: 24px !important;
     }
     /* Revenue section padding */
     div[style*="padding: 52px 48px"] {
-      padding: 32px 20px !important;
+      padding: 28px 20px !important;
+      border-radius: 16px !important;
+    }
+    /* Hide revenue cards on mobile - too busy */
+    div[style*="padding: 52px 48px"] > div:last-child {
+      display: none !important;
     }
     /* Outcomes section heading */
     div[style*="grid-template-columns: repeat(3"] > div {
@@ -714,6 +719,24 @@
     }
     /* Submit button */
     .submit-btn { font-size: 0.9rem; padding: 14px; }
+    /* Centre all text content */
+    .hero-inner { text-align: center; }
+    .waitlist-count { justify-content: center; }
+    .problem-strips { justify-content: center; }
+    /* Section titles */
+    .section-title, .section-label, .section-sub { text-align: center !important; }
+    /* Ensure full width on mobile */
+    body { overflow-x: hidden; width: 100%; }
+    * { max-width: 100%; }
+    /* Pain gain section */
+    .pain-gain { text-align: center; }
+    .pain-side, .gain-side { text-align: left; }
+    /* Outcomes grid */
+    section > div > div[style*="grid-template-columns: repeat(3"] {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+    }
   }
 </style>
 </head>
@@ -829,8 +852,8 @@
       <div class="pain-item"><span class="dot">✗</span> Patients left without continuity of care</div>
     </div>
     <div class="arrow-mid">
-      <div class="arrow-circle">→</div>
-      <div class="arrow-label">With<br>Claim<br>Bridge</div>
+      <div class="arrow-circle" style="font-size:1.4rem;">↓</div>
+      <div class="arrow-label" style="display:none;">With ClaimBridge</div>
     </div>
     <div class="gain-side">
       <div class="side-label">With ClaimBridge</div>
