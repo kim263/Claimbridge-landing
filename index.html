@@ -682,10 +682,7 @@
 
   @media (max-width: 768px) {
     /* Outcomes section - 3 col to 1 col */
-    section > div[style*="grid-template-columns: repeat(3"] {
-      display: flex !important;
-      flex-direction: column !important;
-    }
+    /* handled by outcomes-grid class */
     /* Revenue section - 2 col to 1 col */
     div[style*="grid-template-columns: 1fr 1fr"] {
       display: flex !important;
@@ -697,9 +694,12 @@
       padding: 28px 20px !important;
       border-radius: 16px !important;
     }
-    /* Hide revenue cards on mobile - too busy */
+    /* Revenue cards stack below on mobile */
     div[style*="padding: 52px 48px"] > div:last-child {
-      display: none !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 10px !important;
+      width: 100% !important;
     }
     /* Outcomes section heading */
     div[style*="grid-template-columns: repeat(3"] > div {
@@ -731,11 +731,20 @@
     /* Pain gain section */
     .pain-gain { text-align: center; }
     .pain-side, .gain-side { text-align: left; }
-    /* Outcomes grid */
-    section > div > div[style*="grid-template-columns: repeat(3"] {
+    /* Outcomes grid - horizontal scroll on mobile */
+    .outcomes-grid {
       display: flex !important;
-      flex-direction: column !important;
+      flex-direction: row !important;
+      overflow-x: auto !important;
       gap: 12px !important;
+      padding-bottom: 12px !important;
+      scroll-snap-type: x mandatory !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+    .outcomes-grid > div {
+      min-width: 240px !important;
+      flex-shrink: 0 !important;
+      scroll-snap-align: start !important;
     }
   }
 </style>
@@ -875,7 +884,7 @@
     <h2 class="section-title">Better admin means<br>better patient care</h2>
     <p class="section-sub">When practitioners spend less time buried in paperwork, patients get more of what actually matters — consistent, attentive, uninterrupted clinical care.</p>
   </div>
-  <div class="reveal" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+  <div class="reveal outcomes-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:28px 24px;text-align:center;">
       <div style="font-size:2rem;margin-bottom:14px;">🎯</div>
       <h3 style="font-family:'Arial Black',Arial,sans-serif;font-size:1rem;font-weight:800;margin-bottom:10px;">Continuity of care</h3>
